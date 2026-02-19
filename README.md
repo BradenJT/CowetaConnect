@@ -1,6 +1,5 @@
 # CowetaConnect — Community Small Business Platform
 
-> **Architect:** Senior Software Architect (20+ years)  
 > **Version:** 1.0.0  
 > **Last Updated:** 2026-02-18  
 > **Status:** Architecture Definition Phase
