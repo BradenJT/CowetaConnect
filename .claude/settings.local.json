@@ -3,7 +3,10 @@
     "allow": [
       "Bash(dotnet sln:*)",
       "Bash(dotnet restore:*)",
-      "Bash(ls:*)"
+      "Bash(ls:*)",
+      "Bash(git -C \"C:/Users/brade/Projects/CowetaConnect\" show ff73870 --name-only)",
+      "Bash(dotnet build:*)",
+      "Bash(dotnet test:*)"
     ]
   },
   "enableAllProjectMcpServers": true,

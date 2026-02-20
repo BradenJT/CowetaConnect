@@ -1,7 +1,0 @@
-<Solution>
-  <Project Path="../CowetaConnect.Application/CowetaConnect.Application.csproj" />
-  <Project Path="../CowetaConnect.Domain/CowetaConnect.Domain.csproj" />
-  <Project Path="../CowetaConnect.Infrastructure/CowetaConnect.Infrastructure.csproj" />
-  <Project Path="../CowetaConnect.Tests/CowetaConnect.Tests.csproj" />
-  <Project Path="CowetaConnect.API.csproj" />
-</Solution>

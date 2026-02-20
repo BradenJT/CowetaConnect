@@ -28,6 +28,7 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '10.0.x'
+          dotnet-quality: 'ga'
 
       - name: Restore
         run: dotnet restore CowetaConnect.slnx
@@ -40,7 +41,7 @@ jobs:
           dotnet test CowetaConnect.slnx
           --no-build
           --configuration Release
-          --logger trx
+          --report-trx
           --results-directory ./TestResults
           --verbosity normal
 
@@ -66,6 +67,7 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '10.0.x'
+          dotnet-quality: 'ga'
 
       - name: Restore
         run: dotnet restore CowetaConnect.slnx
