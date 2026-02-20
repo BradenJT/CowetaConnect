@@ -6,7 +6,9 @@
       "Bash(ls:*)",
       "Bash(git -C \"C:/Users/brade/Projects/CowetaConnect\" show ff73870 --name-only)",
       "Bash(dotnet build:*)",
-      "Bash(dotnet test:*)"
+      "Bash(dotnet test:*)",
+      "Bash(git add:*)",
+      "Bash(git rm:*)"
     ]
   },
   "enableAllProjectMcpServers": true,
