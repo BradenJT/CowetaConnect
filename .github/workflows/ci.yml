@@ -15,14 +15,6 @@ jobs:
 
   # ─────────────────────────────────────────────
   # .NET — Restore → Build → Test
-  # Requires CowetaConnect.sln at repo root.
-  # Create it once locally:
-  #   dotnet new sln --name CowetaConnect
-  #   dotnet sln add src/CowetaConnect.Domain/CowetaConnect.Domain.csproj
-  #   dotnet sln add src/CowetaConnect.Application/CowetaConnect.Application.csproj
-  #   dotnet sln add src/CowetaConnect.Infrastructure/CowetaConnect.Infrastructure.csproj
-  #   dotnet sln add src/CowetaConnect.API/CowetaConnect.API.csproj
-  #   dotnet sln add src/CowetaConnect.Tests/CowetaConnect.Tests.csproj
   # ─────────────────────────────────────────────
   build-check:
     name: build-check
@@ -38,14 +30,14 @@ jobs:
           dotnet-version: '10.0.x'
 
       - name: Restore
-        run: dotnet restore CowetaConnect.sln
+        run: dotnet restore CowetaConnect.slnx
 
       - name: Build
-        run: dotnet build CowetaConnect.sln --no-restore --configuration Release
+        run: dotnet build CowetaConnect.slnx --no-restore --configuration Release
 
       - name: Test
         run: >
-          dotnet test CowetaConnect.sln
+          dotnet test CowetaConnect.slnx
           --no-build
           --configuration Release
           --logger trx
@@ -76,17 +68,14 @@ jobs:
           dotnet-version: '10.0.x'
 
       - name: Restore
-        run: dotnet restore CowetaConnect.sln
+        run: dotnet restore CowetaConnect.slnx
 
       - name: Run Format Check
-        run: dotnet format CowetaConnect.sln --verify-no-changes
+        run: dotnet format CowetaConnect.slnx --verify-no-changes
 
   # ─────────────────────────────────────────────
   # Vue.js — Type check + build
-  # Runs `vue-tsc -b && vite build` (the "build"
-  # npm script defined in package.json).
-  # Requires package-lock.json committed to repo
-  # for npm caching to work.
+  # npm run build = vue-tsc -b && vite build
   # ─────────────────────────────────────────────
   frontend-check:
     name: frontend-check
