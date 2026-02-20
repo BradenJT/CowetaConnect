@@ -1,6 +1,13 @@
 {
+  "permissions": {
+    "allow": [
+      "Bash(dotnet sln:*)",
+      "Bash(dotnet restore:*)",
+      "Bash(ls:*)"
+    ]
+  },
+  "enableAllProjectMcpServers": true,
   "enabledMcpjsonServers": [
     "MCPControl"
-  ],
-  "enableAllProjectMcpServers": true
+  ]
 }
