@@ -1,0 +1,6 @@
+@CowetaConnect.API_HostAddress = http://localhost:5189
+
+GET {{CowetaConnect.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

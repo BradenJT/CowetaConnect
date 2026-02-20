@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/CowetaConnect.API/CowetaConnect.API.csproj" />
+    <Project Path="src/CowetaConnect.Application/CowetaConnect.Application.csproj" />
+    <Project Path="src/CowetaConnect.Domain/CowetaConnect.Domain.csproj" />
+    <Project Path="src/CowetaConnect.Infrastructure/CowetaConnect.Infrastructure.csproj" />
+    <Project Path="src/CowetaConnect.Tests/CowetaConnect.Tests.csproj" />
+  </Folder>
+</Solution>
