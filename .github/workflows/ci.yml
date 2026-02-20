@@ -41,7 +41,7 @@ jobs:
           dotnet test CowetaConnect.slnx
           --no-build
           --configuration Release
-          --report-trx
+          --logger trx
           --results-directory ./TestResults
           --verbosity normal
 
