@@ -8,7 +8,12 @@
       "Bash(dotnet build:*)",
       "Bash(dotnet test:*)",
       "Bash(git add:*)",
-      "Bash(git rm:*)"
+      "Bash(git rm:*)",
+      "Bash(git commit:*)",
+      "Bash(npm run lint:*)",
+      "Bash(npm run type-check:*)",
+      "Bash(npm run build:*)",
+      "Bash(python3:*)"
     ]
   },
   "enableAllProjectMcpServers": true,
