@@ -1,7 +1,8 @@
 name: Deploy Vue
 
 on:
-  workflow_dispatch:
+  release:
+    types: [published]
 
 # Cancel in-progress runs for the same ref so stacked pushes don't queue up.
 concurrency:
