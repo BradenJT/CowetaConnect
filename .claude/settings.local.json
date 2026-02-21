@@ -13,7 +13,12 @@
       "Bash(npm run lint:*)",
       "Bash(npm run type-check:*)",
       "Bash(npm run build:*)",
-      "Bash(python3:*)"
+      "Bash(python3:*)",
+      "Bash(cd /c/Users/brade/Projects/CowetaConnect && dotnet add src/CowetaConnect.API/CowetaConnect.API.csproj package MediatR && dotnet add src/CowetaConnect.API/CowetaConnect.API.csproj package FluentValidation.AspNetCore && dotnet add src/CowetaConnect.API/CowetaConnect.API.csproj package Serilog.AspNetCore && dotnet add src/CowetaConnect.API/CowetaConnect.API.csproj package Serilog.Sinks.ApplicationInsights && dotnet add src/CowetaConnect.API/CowetaConnect.API.csproj package Microsoft.AspNetCore.Authentication.JwtBearer && dotnet add src/CowetaConnect.API/CowetaConnect.API.csproj package Asp.Versioning.Mvc && dotnet add src/CowetaConnect.API/CowetaConnect.API.csproj package Asp.Versioning.Mvc.ApiExplorer && dotnet add src/CowetaConnect.API/CowetaConnect.API.csproj package Hangfire.AspNetCore && dotnet add src/CowetaConnect.API/CowetaConnect.API.csproj package Hangfire.PostgreSql && dotnet add src/CowetaConnect.API/CowetaConnect.API.csproj package Azure.Extensions.AspNetCore.Configuration.Secrets && dotnet add src/CowetaConnect.API/CowetaConnect.API.csproj package Azure.Identity && dotnet add src/CowetaConnect.API/CowetaConnect.API.csproj package AspNetCore.HealthChecks.NpgSql && dotnet add src/CowetaConnect.API/CowetaConnect.API.csproj package AspNetCore.HealthChecks.Redis 2>&1)",
+      "Bash(cd /c/Users/brade/Projects/CowetaConnect && dotnet add src/CowetaConnect.Application/CowetaConnect.Application.csproj package MediatR && dotnet add src/CowetaConnect.Application/CowetaConnect.Application.csproj package FluentValidation 2>&1)",
+      "Bash(cd /c/Users/brade/Projects/CowetaConnect && dotnet add src/CowetaConnect.Infrastructure/CowetaConnect.Infrastructure.csproj reference src/CowetaConnect.Domain/CowetaConnect.Domain.csproj && dotnet add src/CowetaConnect.Infrastructure/CowetaConnect.Infrastructure.csproj reference src/CowetaConnect.Application/CowetaConnect.Application.csproj 2>&1)",
+      "Bash(grep:*)",
+      "Bash(echo Exit: $?:*)"
     ]
   },
   "enableAllProjectMcpServers": true,
