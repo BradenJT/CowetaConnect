@@ -38,6 +38,17 @@ Host=cowetaconnect-postgres-prod.postgres.database.azure.com;Port=5432;Database=
 
 ---
 
-## ci.yml secrets
+## deploy-vue.yml secrets
+
+| Secret name | Where to find it | Notes |
+|---|---|---|
+| `AZURE_STATIC_WEB_APPS_API_TOKEN` | Azure Portal → Static Web App resource → Settings → Deployment token (Manage token) | Regenerate if compromised; no manual rotation needed otherwise |
+| `MAPBOX_TOKEN` | Mapbox account → Tokens → your public token | Restrict to `https://cowetaconnect.com` in Mapbox dashboard to prevent abuse |
+
+**No OIDC setup needed** for Azure Static Web Apps — the deployment token is sufficient and is scoped to the SWA resource.
+
+---
+
+## ci.yml / ci-web.yml secrets
 
 No secrets required. CI runs on public runners with no Azure access.
