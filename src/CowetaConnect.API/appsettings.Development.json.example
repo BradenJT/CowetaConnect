@@ -1,0 +1,43 @@
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning",
+      "Microsoft.EntityFrameworkCore.Database.Command": "Information"
+    }
+  },
+  "AllowedHosts": "*",
+  "ConnectionStrings": {
+    "DefaultConnection": "Host=localhost;Port=5432;Database=cowetaconnect;Username=dev;Password=devpassword",
+    "Redis": "localhost:6379"
+  },
+  "Elasticsearch": {
+    "Uri": "http://localhost:9200"
+  },
+  "Jwt": {
+    "PrivateKey": "dev-only-secret-key-replace-in-production-must-be-at-least-32-chars",
+    "Issuer": "https://localhost:5001",
+    "Audience": "http://localhost:5173",
+    "AccessTokenExpiryMinutes": 15,
+    "RefreshTokenExpiryDays": 7
+  },
+  "App": {
+    "BaseUrl": "https://localhost:5001",
+    "SpaOrigin": "http://localhost:5173"
+  },
+  "Hangfire": {
+    "WorkerCount": 2
+  },
+  "ML": {
+    "ModelDirectory": "./ml-models",
+    "RetrainingSchedule": "0 2 * * 0"
+  },
+  "SendGrid": {
+    "ApiKey": "PLACEHOLDER_NOT_NEEDED_FOR_LOCAL_DEV"
+  },
+  "Azure": {
+    "BlobStorage": {
+      "ConnectionString": "UseDevelopmentStorage=true"
+    }
+  }
+}

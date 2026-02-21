@@ -63,6 +63,9 @@ pnpm-debug.log*
 # ================================
 #######################################
 
+# Base docker-compose is committed — do not ignore it
+!docker-compose.yml
+
 # Docker overrides (environment-specific)
 docker-compose.override.yml
 docker-compose.*.override.yml
