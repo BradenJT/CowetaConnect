@@ -1,10 +1,7 @@
 name: Deploy Vue
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - 'src/CowetaConnect.UI/**'
+  workflow_dispatch:
 
 # Cancel in-progress runs for the same ref so stacked pushes don't queue up.
 concurrency:
