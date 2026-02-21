@@ -1,8 +1,10 @@
 using Azure.Identity;
 using Azure.Storage.Blobs;
+using CowetaConnect.Application.Auth.Interfaces;
 using CowetaConnect.Infrastructure.Data;
 using CowetaConnect.Infrastructure.Health;
 using CowetaConnect.Infrastructure.Identity;
+using CowetaConnect.Infrastructure.Services;
 using Elastic.Clients.Elasticsearch;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -67,6 +69,11 @@ public static class ServiceCollectionExtensions
 
         // Elasticsearch health check
         services.AddSingleton<ElasticsearchHealthCheck>();
+
+        // Auth services
+        services.AddScoped<IJwtTokenService, JwtTokenService>();
+        services.AddScoped<IAuthUserService, AuthUserService>();
+        services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
 
         return services;
     }
