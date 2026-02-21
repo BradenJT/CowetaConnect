@@ -1,5 +1,6 @@
 // src/CowetaConnect.Infrastructure/Data/Configurations/BusinessConfiguration.cs
 using CowetaConnect.Domain.Entities;
+using CowetaConnect.Infrastructure.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -40,8 +41,9 @@ public class BusinessConfiguration : IEntityTypeConfiguration<Business>
         builder.HasIndex(b => b.City);
         builder.HasIndex(b => b.Location).HasMethod("GIST");
 
-        builder.HasOne(b => b.Owner)
-            .WithMany(u => u.Businesses)
+        // Shadow FK to ApplicationUser — no navigation property (ApplicationUser lives in Infrastructure).
+        builder.HasOne<ApplicationUser>()
+            .WithMany()
             .HasForeignKey(b => b.OwnerId)
             .OnDelete(DeleteBehavior.Restrict);
 
