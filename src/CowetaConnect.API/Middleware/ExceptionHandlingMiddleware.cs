@@ -25,6 +25,10 @@ public sealed class ExceptionHandlingMiddleware(
 
     private static async Task HandleExceptionAsync(HttpContext context, Exception exception)
     {
+        // Set Retry-After header before writing response.
+        if (exception is TooManyAttemptsException tooMany)
+            context.Response.Headers.RetryAfter = tooMany.RetryAfterSeconds.ToString();
+
         var problem = exception switch
         {
             NotFoundException ex => new ProblemDetails
@@ -40,6 +44,14 @@ public sealed class ExceptionHandlingMiddleware(
                 Type = "https://httpstatuses.com/403",
                 Title = "Forbidden",
                 Status = StatusCodes.Status403Forbidden,
+                Detail = ex.Message,
+                Instance = context.Request.Path
+            },
+            TooManyAttemptsException ex => new ProblemDetails
+            {
+                Type = "https://httpstatuses.com/429",
+                Title = "Too Many Requests",
+                Status = StatusCodes.Status429TooManyRequests,
                 Detail = ex.Message,
                 Instance = context.Request.Path
             },

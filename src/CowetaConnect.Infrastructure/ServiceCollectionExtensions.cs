@@ -1,8 +1,12 @@
 using Azure.Identity;
 using Azure.Storage.Blobs;
+using CowetaConnect.Application.Auth.Interfaces;
 using CowetaConnect.Infrastructure.Data;
 using CowetaConnect.Infrastructure.Health;
+using CowetaConnect.Infrastructure.Identity;
+using CowetaConnect.Infrastructure.Services;
 using Elastic.Clients.Elasticsearch;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -24,6 +28,24 @@ public static class ServiceCollectionExtensions
                     .UseNetTopologySuite()
                     .MigrationsAssembly(typeof(CowetaConnectDbContext).Assembly.GetName().Name))
             .UseSnakeCaseNamingConvention());
+
+        // ASP.NET Core Identity — lean setup (no cookie auth, just UserManager + stores).
+        services.AddIdentityCore<ApplicationUser>(options =>
+        {
+            // Password policy — matches SECURITY.md requirements.
+            options.Password.RequireDigit = true;
+            options.Password.RequireUppercase = true;
+            options.Password.RequireLowercase = false;
+            options.Password.RequireNonAlphanumeric = false;
+            options.Password.RequiredLength = 8;
+
+            // Disable Identity's built-in lockout — we handle it in Redis per-IP.
+            options.Lockout.MaxFailedAccessAttempts = int.MaxValue;
+
+            options.User.RequireUniqueEmail = true;
+        })
+        .AddRoles<IdentityRole<Guid>>()
+        .AddEntityFrameworkStores<CowetaConnectDbContext>();
 
         // Redis
         services.AddSingleton<IConnectionMultiplexer>(_ =>
@@ -47,6 +69,11 @@ public static class ServiceCollectionExtensions
 
         // Elasticsearch health check
         services.AddSingleton<ElasticsearchHealthCheck>();
+
+        // Auth services
+        services.AddScoped<IJwtTokenService, JwtTokenService>();
+        services.AddScoped<IAuthUserService, AuthUserService>();
+        services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
 
         return services;
     }
