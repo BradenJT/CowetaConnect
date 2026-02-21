@@ -9,6 +9,7 @@ using CowetaConnect.Infrastructure;
 using CowetaConnect.Infrastructure.Health;
 using Hangfire;
 using Hangfire.PostgreSql;
+using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.IdentityModel.Tokens;
@@ -109,22 +110,39 @@ try
         });
     });
 
-    // ── Authentication (JWT Bearer / RS256) ───────────────────────────────────
+    // ── Authentication ────────────────────────────────────────────────────────
     builder.Services
         .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         .AddJwtBearer(options =>
         {
             options.TokenValidationParameters = new TokenValidationParameters
             {
-                ValidateIssuer = true,
-                ValidIssuer = builder.Configuration["Jwt:Issuer"],
-                ValidateAudience = true,
-                ValidAudience = builder.Configuration["Jwt:Audience"],
-                ValidateLifetime = true,
+                ValidateIssuer           = true,
+                ValidIssuer              = builder.Configuration["Jwt:Issuer"],
+                ValidateAudience         = true,
+                ValidAudience            = builder.Configuration["Jwt:Audience"],
+                ValidateLifetime         = true,
                 ValidateIssuerSigningKey = true,
-                IssuerSigningKey = signingKey,
-                ClockSkew = TimeSpan.Zero // Strict expiry — access token is only 15 min.
+                IssuerSigningKey         = signingKey,
+                ClockSkew                = TimeSpan.Zero
             };
+        })
+        .AddCookie("GoogleOAuth", options =>
+        {
+            // Temporary cookie that carries OAuth state across the Google redirect.
+            // SameSite must be Lax (not Strict) — the return redirect from Google is cross-site.
+            options.Cookie.Name         = "google_oauth_state";
+            options.Cookie.HttpOnly     = true;
+            options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+            options.Cookie.SameSite     = SameSiteMode.Lax;
+        })
+        .AddGoogle(options =>
+        {
+            options.SignInScheme  = "GoogleOAuth";
+            options.ClientId      = builder.Configuration["Google:ClientId"] ?? string.Empty;
+            options.ClientSecret  = builder.Configuration["Google:ClientSecret"] ?? string.Empty;
+            options.CallbackPath  = "/api/v1/auth/google/callback";
+            options.SaveTokens    = false;
         });
 
     // ── Authorization ─────────────────────────────────────────────────────────
