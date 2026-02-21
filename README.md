@@ -69,6 +69,42 @@ coweta-connect/
 
 ---
 
+## Local Development Quick Start
+
+### Prerequisites
+
+- [.NET 10 SDK](https://dotnet.microsoft.com/download)
+- [Node.js 20+](https://nodejs.org/)
+- [Docker Desktop](https://www.docker.com/products/docker-desktop/)
+
+### Setup
+
+```bash
+# 1. Start infrastructure (PostgreSQL/PostGIS, Redis, Elasticsearch)
+docker-compose up -d
+
+# 2. Copy example config and apply database migrations
+cd src/CowetaConnect.API
+cp appsettings.Development.json.example appsettings.Development.json
+dotnet ef database update \
+  --project ../CowetaConnect.Infrastructure \
+  --startup-project .
+
+# 3. Run the API
+dotnet run
+
+# 4. Run the Vue frontend (separate terminal)
+cd ../../src/CowetaConnect.UI
+npm install
+npm run dev
+```
+
+The API will be available at `https://localhost:5001` and the frontend at `http://localhost:5173`.
+
+> **Health checks:** After `docker-compose up -d`, verify services are ready with `docker ps` — all three containers should show `(healthy)` status before running migrations.
+
+---
+
 ## Quick Links
 
 - [Full Architecture →](docs/ARCHITECTURE.md)
