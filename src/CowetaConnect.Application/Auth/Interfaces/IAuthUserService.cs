@@ -39,4 +39,16 @@ public interface IAuthUserService
 
     /// <summary>Updates LastLogin timestamp for the given user.</summary>
     Task UpdateLastLoginAsync(string userId, CancellationToken ct = default);
+
+    /// <summary>
+    /// Finds or creates a user from a Google OAuth sign-in.
+    /// Priority: (1) match by google_subject, (2) match by email and link, (3) create new.
+    /// New users get Role=Member and IsEmailVerified=true.
+    /// </summary>
+    Task<AuthUserResult> UpsertGoogleUserAsync(
+        string googleSub,
+        string email,
+        string displayName,
+        string? avatarUrl,
+        CancellationToken ct = default);
 }
