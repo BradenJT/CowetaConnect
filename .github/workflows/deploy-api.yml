@@ -1,13 +1,7 @@
 name: Deploy API
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - 'src/CowetaConnect.API/**'
-      - 'src/CowetaConnect.Application/**'
-      - 'src/CowetaConnect.Domain/**'
-      - 'src/CowetaConnect.Infrastructure/**'
+  workflow_dispatch:
 
 # Cancel in-progress runs for the same ref so stacked pushes don't queue up.
 concurrency:
