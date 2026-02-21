@@ -16,12 +16,14 @@ public static class ServiceCollectionExtensions
         this IServiceCollection services,
         IConfiguration configuration)
     {
-        // EF Core + PostgreSQL
-        services.AddDbContext<AppDbContext>(options =>
+        // EF Core + PostgreSQL + PostGIS
+        services.AddDbContext<CowetaConnectDbContext>(options =>
             options.UseNpgsql(
                 configuration.GetConnectionString("Default"),
-                npgsql => npgsql.MigrationsAssembly(
-                    typeof(AppDbContext).Assembly.GetName().Name)));
+                npgsql => npgsql
+                    .UseNetTopologySuite()
+                    .MigrationsAssembly(typeof(CowetaConnectDbContext).Assembly.GetName().Name))
+            .UseSnakeCaseNamingConvention());
 
         // Redis
         services.AddSingleton<IConnectionMultiplexer>(_ =>
