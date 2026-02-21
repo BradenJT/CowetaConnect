@@ -8,4 +8,16 @@
     <UseVSTest>true</UseVSTest>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\CowetaConnect.Application\CowetaConnect.Application.csproj" />
+    <ProjectReference Include="..\CowetaConnect.Infrastructure\CowetaConnect.Infrastructure.csproj" />
+    <ProjectReference Include="..\CowetaConnect.API\CowetaConnect.API.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Moq" Version="4.20.72" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="10.0.3" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="10.0.3" />
+  </ItemGroup>
+
 </Project>
