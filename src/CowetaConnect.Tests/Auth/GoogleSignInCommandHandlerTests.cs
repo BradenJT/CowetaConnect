@@ -86,7 +86,7 @@ public class GoogleSignInCommandHandlerTests
                 It.IsAny<string>(), It.IsAny<string?>(), default))
             .ReturnsAsync(new AuthUserResult(false, null, null, null, "DB write failed"));
 
-        await Assert.ThrowsExceptionAsync<InvalidOperationException>(() =>
+        await Assert.ThrowsAsync<InvalidOperationException>(() =>
             _sut.Handle(
                 new GoogleSignInCommand("sub-x", "fail@test.com", "Fail User", null), default));
     }

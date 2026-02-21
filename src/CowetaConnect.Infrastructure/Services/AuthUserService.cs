@@ -2,6 +2,7 @@
 using CowetaConnect.Application.Auth.Interfaces;
 using CowetaConnect.Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using StackExchange.Redis;
 
@@ -91,5 +92,62 @@ public sealed class AuthUserService(
 
         user.LastLogin = DateTimeOffset.UtcNow;
         await userManager.UpdateAsync(user);
+    }
+
+    public async Task<AuthUserResult> UpsertGoogleUserAsync(
+        string googleSub, string email, string displayName, string? avatarUrl,
+        CancellationToken ct = default)
+    {
+        // 1. Match by google_subject — existing Google user.
+        var bySubject = await userManager.Users
+            .FirstOrDefaultAsync(u => u.GoogleSubject == googleSub, ct);
+
+        if (bySubject is not null)
+            return new AuthUserResult(true, bySubject.Id.ToString(), bySubject.Email, bySubject.Role);
+
+        // 2. Match by email — existing password account; link it.
+        var byEmail = await userManager.FindByEmailAsync(email);
+
+        if (byEmail is not null)
+        {
+            byEmail.GoogleSubject = googleSub;
+            if (avatarUrl is not null) byEmail.AvatarUrl = avatarUrl;
+
+            var linkResult = await userManager.UpdateAsync(byEmail);
+            if (!linkResult.Succeeded)
+            {
+                var error = string.Join("; ", linkResult.Errors.Select(e => e.Description));
+                logger.LogError("Failed to link Google account for {Email}: {Error}", email, error);
+                return new AuthUserResult(false, null, null, null, error);
+            }
+
+            logger.LogInformation("Linked Google account to existing user {Email}", email);
+            return new AuthUserResult(true, byEmail.Id.ToString(), byEmail.Email, byEmail.Role);
+        }
+
+        // 3. No match — create a new Google-only user.
+        var newUser = new ApplicationUser
+        {
+            Id              = Guid.NewGuid(),
+            UserName        = email,
+            Email           = email,
+            DisplayName     = displayName,
+            AvatarUrl       = avatarUrl,
+            Role            = "Member",
+            IsEmailVerified = true,   // Google has already verified the email
+            GoogleSubject   = googleSub,
+            CreatedAt       = DateTimeOffset.UtcNow
+        };
+
+        var createResult = await userManager.CreateAsync(newUser);  // no password
+        if (!createResult.Succeeded)
+        {
+            var error = string.Join("; ", createResult.Errors.Select(e => e.Description));
+            logger.LogWarning("Google user creation failed for {Email}: {Error}", email, error);
+            return new AuthUserResult(false, null, null, null, error);
+        }
+
+        logger.LogInformation("Created new user via Google OAuth for {Email}", email);
+        return new AuthUserResult(true, newUser.Id.ToString(), newUser.Email, newUser.Role);
     }
 }
